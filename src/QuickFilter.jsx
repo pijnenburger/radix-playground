@@ -2,7 +2,7 @@
 import * as React from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 // import * as Checkbox from "@radix-ui/react-checkbox";
-import { CheckIcon } from "@radix-ui/react-icons";
+import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import styles from "./QuickFilter.module.css";
 
 export function FilterIndicator({ value }) {
@@ -24,22 +24,33 @@ function QuickFilter({ filterValues, filterLabel }) {
     } else {
       const nextItems = [...checkedValues, item];
       setCheckedValues(nextItems);
-      console.log(checkedValues);
     }
   }
+
+  const [isOpen, setIsOpen] = React.useState();
 
   // const ref = React.useRef();
 
   return (
     <>
-      <DropdownMenu.Root className="flex justify-center">
+      <DropdownMenu.Root
+        className="flex justify-center"
+        onOpenChange={(event) => {
+          setIsOpen(event);
+        }}
+      >
         <DropdownMenu.Trigger
-          className={`relative flex items-center justify-center gap-1 border-2 border-slate-300 bg-white text-base text-slate-800 hover:border-slate-400 hover:bg-slate-100 hover:text-slate-900 ${
+          className={`relative flex select-none items-center justify-center gap-1 border-2 border-slate-300 bg-white text-base text-slate-800 hover:border-slate-400 hover:bg-slate-100 hover:text-slate-900 ${
             filterCount === 0 ? "border-slate-400" : "border-slate-900"
           }`}
         >
           {filterCount === 1 ? checkedValues[0] : filterLabel}
           {filterCount >= 1 && <FilterIndicator value={filterCount} />}
+          <ChevronDownIcon
+            className={`${
+              isOpen ? "rotate-180" : "rotate-0"
+            } h-4 w-4 transform transition-transform will-change-transform`}
+          />
         </DropdownMenu.Trigger>
         <DropdownMenu.Portal className="relative">
           <DropdownMenu.Content
@@ -47,25 +58,25 @@ function QuickFilter({ filterValues, filterLabel }) {
             sideOffset={4}
             className={` max-h-[320px] min-w-[320px] overflow-scroll border border-slate-300 bg-white p-0 text-slate-800 shadow-sm ${styles.DropdownMenuContent}`}
           >
-            {filterValues.map((item) => {
+            {filterValues.map(({ label, count }) => {
               const id = crypto.randomUUID();
-              const checked = checkedValues.includes(item);
+              const checked = checkedValues.includes(label);
 
               return (
-                <>
+                <div key={id}>
                   <DropdownMenu.CheckboxItem
-                    key={id}
+                    key={`label-${id}`}
                     checked={checked}
                     onSelect={(event) => {
                       event.preventDefault();
                     }}
                     onCheckedChange={() => {
-                      addOrRemoveCheck(item);
+                      addOrRemoveCheck(label);
                     }}
-                    className={` gap-2 text-ellipsis px-4 py-6 text-base text-slate-800 data-[highlighted]:bg-slate-50 data-[highlighted]:text-slate-900 ${styles.DropdownMenuCheckboxItem}`}
+                    className={` flex cursor-pointer flex-row gap-2 text-ellipsis px-4 py-6 font-sans text-base text-slate-800 data-[highlighted]:bg-slate-50 data-[highlighted]:text-slate-900 data-[state=checked]:text-blue-700 ${styles.DropdownMenuCheckboxItem}`}
                   >
                     <DropdownMenu.Group
-                      className={`flex h-6  w-6 justify-center border  align-middle ${
+                      className={`flex h-6 w-6 justify-center border align-middle ${
                         checked
                           ? "border-blue-600 bg-blue-600 hover:border-blue-700 hover:bg-blue-700"
                           : "border-slate-400 bg-white hover:border-slate-500 hover:bg-white"
@@ -75,10 +86,16 @@ function QuickFilter({ filterValues, filterLabel }) {
                         <CheckIcon className="h-6 w-6 text-white" />
                       </DropdownMenu.ItemIndicator>
                     </DropdownMenu.Group>
-                    {item}
+                    {label}
+                    <DropdownMenu.Item
+                      className="pointer-events-none ml-auto pl-4 font-mono text-sm text-slate-500"
+                      key={`count-${id}`}
+                    >
+                      {count}
+                    </DropdownMenu.Item>
                   </DropdownMenu.CheckboxItem>
                   <DropdownMenu.Separator className=" h-px bg-slate-200" />
-                </>
+                </div>
               );
             })}
             <button

@@ -1,0 +1,30 @@
+[
+  {
+    "label": "Today",
+    "count": 135
+  },
+  {
+    "label": "Tomorrow",
+    "count": 105
+  },
+  {
+    "label": "Thursday",
+    "count": 125
+  },
+  {
+    "label": "Friday",
+    "count": 190
+  },
+  {
+    "label": "Saturday",
+    "count": 100
+  },
+  {
+    "label": "Sunday",
+    "count": 88
+  },
+  {
+    "label": "Monday",
+    "count": 66
+  }
+]
