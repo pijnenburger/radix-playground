@@ -2,8 +2,8 @@
 import * as React from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
-import styles from "./QuickFilter.module.css";
 import FilterCountIndicator from "./FilterCountIndicator";
+import styles from "./QuickFilter.module.css";
 
 function QuickFilter({ filterValues, filterLabel }) {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -65,73 +65,75 @@ function QuickFilter({ filterValues, filterLabel }) {
           />
         )}
       </DropdownMenu.Trigger>
-      <DropdownMenu.Portal className="relative">
+      <DropdownMenu.Portal>
         <DropdownMenu.Content
           align="start"
           sideOffset={4}
-          className={` max-h-[320px] min-w-[320px] overflow-scroll border border-slate-300 bg-white p-0 text-slate-800 shadow-sm ${styles.DropdownMenuContent}`}
+          className=" flex max-h-[320px] min-w-[320px] flex-col overflow-clip rounded-md border border-slate-300 bg-white p-0 text-slate-800 shadow-xl"
         >
-          {filterValues.map((item) => {
-            const id = crypto.randomUUID();
+          <div id="scroll-container" className="flex-grow overflow-scroll">
+            {filterValues.map((item) => {
+              const id = crypto.randomUUID();
 
-            // new way of checking if it should be checked
-            const index = checkedValues.findIndex(
-              (obj) => obj.label === item.label
-            );
-            const checked = index === -1 ? false : true;
+              // new way of checking if it should be checked
+              const index = checkedValues.findIndex(
+                (obj) => obj.label === item.label
+              );
+              const checked = index === -1 ? false : true;
 
-            // Old way of checking if it should be checked
-            // const checked = checkedValues.includes(item.label);
+              // Old way of checking if it should be checked
+              // const checked = checkedValues.includes(item.label);
 
-            return (
-              <div key={id}>
-                <DropdownMenu.CheckboxItem
-                  key={`label-${id}`}
-                  checked={checked}
-                  onSelect={(event) => {
-                    event.preventDefault();
-                  }}
-                  onCheckedChange={() => {
-                    addOrRemoveCheck(item);
-                  }}
-                  className={` flex cursor-pointer flex-row gap-2 text-ellipsis px-4 py-6 font-sans text-base text-slate-800 data-[highlighted]:bg-slate-50 data-[highlighted]:text-slate-900 data-[state=checked]:text-blue-700 ${styles.DropdownMenuCheckboxItem}`}
-                >
-                  <DropdownMenu.Group
-                    className={`flex h-6 w-6 justify-center border align-middle ${
-                      checked
-                        ? "border-blue-600 bg-blue-600 hover:border-blue-700 hover:bg-blue-700"
-                        : "border-slate-400 bg-white hover:border-slate-500 hover:bg-white"
-                    }`}
+              return (
+                <div key={id}>
+                  <DropdownMenu.CheckboxItem
+                    key={`label-${id}`}
+                    checked={checked}
+                    onSelect={(event) => {
+                      event.preventDefault();
+                    }}
+                    onCheckedChange={() => {
+                      addOrRemoveCheck(item);
+                    }}
+                    className={` flex cursor-pointer flex-row gap-2 text-ellipsis px-4 py-6 font-sans text-base text-slate-800 data-[highlighted]:bg-slate-50 data-[highlighted]:text-slate-900 data-[state=checked]:text-blue-700 ${styles.DropdownMenuCheckboxItem}`}
                   >
-                    <DropdownMenu.ItemIndicator className={`h-6 w-6 `}>
-                      <CheckIcon className="h-6 w-6 text-white" />
-                    </DropdownMenu.ItemIndicator>
-                  </DropdownMenu.Group>
-                  {item.label}
-                  <DropdownMenu.Group
-                    className="pointer-events-none ml-auto pl-4 font-mono text-sm text-slate-500"
-                    key={`count-${id}`}
-                  >
-                    {item.count}
-                  </DropdownMenu.Group>
-                </DropdownMenu.CheckboxItem>
-                <DropdownMenu.Separator className=" h-px bg-slate-200" />
-              </div>
-            );
-          })}
+                    <DropdownMenu.Group
+                      className={`flex h-6 w-6 justify-center border align-middle ${
+                        checked
+                          ? "border-blue-600 bg-blue-600 hover:border-blue-700 hover:bg-blue-700"
+                          : "border-slate-400 bg-white hover:border-slate-500 hover:bg-white"
+                      }`}
+                    >
+                      <DropdownMenu.ItemIndicator className={`h-6 w-6 `}>
+                        <CheckIcon className="h-6 w-6 text-white" />
+                      </DropdownMenu.ItemIndicator>
+                    </DropdownMenu.Group>
+                    {item.label}
+                    <DropdownMenu.Group
+                      className="pointer-events-none ml-auto pl-4 font-mono text-sm text-slate-500"
+                      key={`count-${id}`}
+                    >
+                      {item.count}
+                    </DropdownMenu.Group>
+                  </DropdownMenu.CheckboxItem>
+                  <DropdownMenu.Separator className=" h-px bg-slate-200" />
+                </div>
+              );
+            })}
+          </div>
           <button
             onClick={() => {
               setIsOpen(false);
             }}
-            className={`sticky bottom-0 box-border flex w-full justify-center rounded-none bg-blue-600 px-3 py-3 align-middle font-sans text-base text-white hover:bg-blue-700 
-              ${
-                filterCount === 0 &&
-                "bg-slate-900 text-slate-100 hover:bg-slate-900"
-              }`}
+            className={`box-border flex w-full justify-center rounded-none bg-blue-600 px-3 py-3 align-middle font-sans text-base text-white hover:bg-blue-700 
+            ${
+              filterCount === 0 &&
+              "bg-slate-900 text-slate-100 hover:bg-slate-900"
+            }`}
           >
             {filterCount === 0 ? "Close" : `Show ${resultCount} results`}
           </button>
-          <DropdownMenu.Arrow className="fill-white" />
+          <DropdownMenu.Arrow className=" h-[8px] w-[16px] fill-slate-300 stroke-slate-300" />
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>

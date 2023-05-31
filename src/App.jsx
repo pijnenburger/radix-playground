@@ -2,6 +2,8 @@
 import * as React from "react";
 
 import QuickFilter from "./QuickFilter";
+import QuickNumFilter from "./QuickNumFilter";
+
 import "./App.css";
 import brands from "./json/brands.json";
 import closingDates from "./json/closingDates.json";
@@ -21,6 +23,7 @@ function App() {
           className=" flex w-[1200px] max-w-[1200px] justify-start overflow-clip overflow-x-auto whitespace-nowrap px-4 py-4 font-sans"
         >
           <div className="flex justify-start gap-2">
+            <QuickNumFilter filterLabel="Current bid" />
             <QuickFilter
               filterValues={reservePrice}
               filterLabel="Reserve price"
