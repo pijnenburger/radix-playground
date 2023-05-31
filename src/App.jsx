@@ -18,7 +18,7 @@ function App() {
       >
         <div
           id="scroll-container"
-          className=" flex w-[984px] max-w-[984px] justify-start overflow-clip overflow-x-auto whitespace-nowrap px-4 py-4 font-sans"
+          className=" flex w-[1200px] max-w-[1200px] justify-start overflow-clip overflow-x-auto whitespace-nowrap px-4 py-4 font-sans"
         >
           <div className="flex justify-start gap-2">
             <QuickFilter

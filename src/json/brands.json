@@ -104,14 +104,6 @@
     "count": 96
   },
   {
-    "label": "Christian",
-    "count": 5
-  },
-  {
-    "label": "Dior",
-    "count": 79
-  },
-  {
     "label": "Prada",
     "count": 35
   },
@@ -136,14 +128,6 @@
     "count": 39
   },
   {
-    "label": "Saint",
-    "count": 66
-  },
-  {
-    "label": "Laurent",
-    "count": 15
-  },
-  {
     "label": "Burberry",
     "count": 48
   },
@@ -154,14 +138,6 @@
   {
     "label": "Veneta",
     "count": 23
-  },
-  {
-    "label": "Gucci",
-    "count": 97
-  },
-  {
-    "label": "Burberry",
-    "count": 31
   },
   {
     "label": "Moncler",
@@ -222,10 +198,6 @@
   {
     "label": "Chopard",
     "count": 82
-  },
-  {
-    "label": "Gucci",
-    "count": 16
   },
   {
     "label": "Piaget",

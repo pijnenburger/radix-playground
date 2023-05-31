@@ -1,48 +1,35 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-// import * as Checkbox from "@radix-ui/react-checkbox";
 import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import styles from "./QuickFilter.module.css";
-
-export function FilterIndicator({ value }) {
-  // const toprightStyle = "absolute -right-3 -top-3 z-10 h-6 w-6 text-sm";
-  const inlineStyle = "h-[20px] w-[20px] text-xs";
-
-  return (
-    <div
-      className={`${inlineStyle} flex items-center justify-center rounded-full bg-slate-800 px-2 font-mono text-blue-50`}
-    >
-      {value}
-    </div>
-  );
-}
+import FilterCountIndicator from "./FilterCountIndicator";
 
 function QuickFilter({ filterValues, filterLabel }) {
+  const [isOpen, setIsOpen] = React.useState(false);
   const [checkedValues, setCheckedValues] = React.useState([]);
   const filterCount = checkedValues.length;
+  const resultCount = checkedValues.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.count,
+    0
+  );
 
   function addOrRemoveCheck(item) {
-    // Complex function looking at label & count. Currently not working...
-    const itemExists = checkedValues.some((checkedItem) => {
-      return (
-        checkedItem.label === item.label && checkedItem.count === item.count
-      );
-    });
-    console.log(item);
-    console.log(itemExists);
+    const index = checkedValues.findIndex((obj) => obj.label === item.label);
 
-    // Simple function checking labels only
-    if (checkedValues.includes(item.label)) {
-      const nextItems = checkedValues.filter((a) => a !== item.label);
+    if (index !== -1) {
+      // Object with the same label exists, remove it
+      const nextItems = [...checkedValues];
+      nextItems.splice(index, 1);
+      // console.log(nextItems);
       setCheckedValues(nextItems);
     } else {
-      const nextItems = [...checkedValues, item.label];
+      // Object doesn't exist, add it
+      const nextItems = [...checkedValues, item];
+      // console.log(nextItems);
       setCheckedValues(nextItems);
     }
   }
-
-  const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <DropdownMenu.Root
@@ -67,7 +54,7 @@ function QuickFilter({ filterValues, filterLabel }) {
 
         {filterLabel}
         {filterCount >= 1 ? (
-          <FilterIndicator value={filterCount} />
+          <FilterCountIndicator value={filterCount} />
         ) : (
           <ChevronDownIcon
             width={20}
@@ -86,7 +73,15 @@ function QuickFilter({ filterValues, filterLabel }) {
         >
           {filterValues.map((item) => {
             const id = crypto.randomUUID();
-            const checked = checkedValues.includes(item.label);
+
+            // new way of checking if it should be checked
+            const index = checkedValues.findIndex(
+              (obj) => obj.label === item.label
+            );
+            const checked = index === -1 ? false : true;
+
+            // Old way of checking if it should be checked
+            // const checked = checkedValues.includes(item.label);
 
             return (
               <div key={id}>
@@ -134,10 +129,9 @@ function QuickFilter({ filterValues, filterLabel }) {
                 "bg-slate-900 text-slate-100 hover:bg-slate-900"
               }`}
           >
-            {filterCount === 0
-              ? "Close"
-              : `Show ${Math.round(Math.random() * 240, 0)} results`}
+            {filterCount === 0 ? "Close" : `Show ${resultCount} results`}
           </button>
+          <DropdownMenu.Arrow className="fill-white" />
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
