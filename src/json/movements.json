@@ -1,0 +1,42 @@
+[
+  {
+    "label": "Automatic",
+    "count": 78
+  },
+  {
+    "label": "Quartz",
+    "count": 34
+  },
+  {
+    "label": "Mechanical",
+    "count": 56
+  },
+  {
+    "label": "Chronograph",
+    "count": 91
+  },
+  {
+    "label": "Digital",
+    "count": 12
+  },
+  {
+    "label": "Kinetic",
+    "count": 67
+  },
+  {
+    "label": "Tourbillon",
+    "count": 23
+  },
+  {
+    "label": "Perpetual Calendar",
+    "count": 45
+  },
+  {
+    "label": "Moon Phase",
+    "count": 87
+  },
+  {
+    "label": "Diver's",
+    "count": 56
+  }
+]
