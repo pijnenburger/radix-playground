@@ -6,8 +6,13 @@ import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 import styles from "./QuickFilter.module.css";
 
 export function FilterIndicator({ value }) {
+  // const toprightStyle = "absolute -right-3 -top-3 z-10 h-6 w-6 text-sm";
+  const inlineStyle = "h-[20px] w-[20px] text-xs";
+
   return (
-    <div className=" absolute -right-3 -top-3 flex h-6 w-6 min-w-min items-center justify-center rounded-full bg-slate-800 px-2 font-mono text-sm text-blue-50">
+    <div
+      className={`${inlineStyle} flex items-center justify-center rounded-full bg-slate-800 px-2 font-mono text-blue-50`}
+    >
       {value}
     </div>
   );
@@ -48,19 +53,30 @@ function QuickFilter({ filterValues, filterLabel }) {
       open={isOpen}
     >
       <DropdownMenu.Trigger
-        className={` relative flex select-none items-center justify-center gap-1 bg-white py-2 pl-4 pr-3 text-base text-slate-800 hover:border-slate-400 hover:bg-slate-100 hover:text-slate-900 ${
+        className={` relative box-border flex h-[44px] select-none items-center justify-center gap-1 bg-white py-2 pl-4 pr-3 text-base text-slate-800 hover:border-slate-400 hover:bg-slate-100 hover:text-slate-900 ${
           filterCount === 0
             ? "border border-slate-300"
             : "border-2 border-slate-900"
         }`}
       >
-        {filterCount === 1 ? checkedValues[0] : filterLabel}
-        {filterCount >= 1 && <FilterIndicator value={filterCount} />}
-        <ChevronDownIcon
-          className={`${
-            isOpen ? "rotate-180" : "rotate-0"
-          } h-4 w-4 transform transition-transform will-change-transform`}
-        />
+        {/* Show filter count indicator */}
+        {/* {filterCount >= 1 && <FilterIndicator value={filterCount} />} */}
+
+        {/* Show first selected value or filter category */}
+        {/* {filterCount === 1 ? checkedValues[0] : filterLabel} */}
+
+        {filterLabel}
+        {filterCount >= 1 ? (
+          <FilterIndicator value={filterCount} />
+        ) : (
+          <ChevronDownIcon
+            width={20}
+            height={20}
+            className={`${
+              isOpen ? "rotate-180" : "rotate-0"
+            } h-5 w-5 transform transition-transform will-change-transform`}
+          />
+        )}
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal className="relative">
         <DropdownMenu.Content
